@@ -14,7 +14,15 @@ public class Exercises2 {
     */
 
     public int[] twoSum(int[] nums, int target) {
-        // TODO
+        int n = nums.length;
+        for (int i=0; i < n; i++){
+            for (int j=i+1; j < n; j++){
+                if (nums[i] + nums[j] == target) {
+                    return new int[]{i, j}; 
+
+                }
+            }
+        }
         return null;
     }
 
@@ -48,9 +56,36 @@ public class Exercises2 {
     Given a roman numeral, convert it to an integer.
     */
 
-    public int romanToInt(String s) {
-        // TODO
-        return 0;
+    public int romanToInt(String roman) {
+        Map<Character, Integer> convertMap = new HashMap<>(); 
+        convertMap.put('I', 1);
+        convertMap.put('V', 5);
+        convertMap.put('X', 10);
+        convertMap.put('L', 50);
+        convertMap.put('C', 100);
+        convertMap.put('D', 500);
+        convertMap.put('M', 1000);
+
+        int number = 0, prev = 0; 
+
+        for (int i = 0; i < roman.length(); i++) {
+
+            int current = convertMap.get(roman.charAt(i)); 
+            /* 
+            If the current character has a greater value than the previous one,
+            we subtract twice the value of the smaller one. 
+            */
+            if (current > prev) {
+                number += current - 2 * prev;
+            } else {
+                number += current;
+            }
+
+            prev = current; 
+                
+
+        }
+        return number;
     }
 
     /*
@@ -59,11 +94,30 @@ public class Exercises2 {
     */
 
     public List<List<Integer>> permute(int[] nums) {
-        // TODO
-        return null;
+        List<List<Integer>> output_list = new ArrayList<>();
+        findPermutations(nums, output_list, new ArrayList<>());
+        return output_list;
+    }
+
+    private void findPermutations(int[] nums, List<List<Integer>> output_list, List<Integer> temp_list) {
+        if (temp_list.size() == nums.length) {
+            output_list.add(new ArrayList<>(temp_list));
+        } else {
+            for (int i = 0; i < nums.length; i++) {
+                // if a number is already in the permutation, skip it 
+                if (temp_list.contains(nums[i])) continue;
+                temp_list.add(nums[i]);
+                findPermutations(nums, output_list, temp_list);
+                // After trying a number, remove it from the permutation
+                temp_list.remove(temp_list.size() - 1);
+
+
+            }
+        }
     }
 
     public static void main(String[] args) {
         // test your code here!
+
     }
 }
